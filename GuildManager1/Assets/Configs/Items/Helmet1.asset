@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29ad70dc71875a14dba547ed8bd651c2, type: 3}
+  m_Name: Helmet1
+  m_EditorClassIdentifier: 
+  Demage: 12
+  Hp: 45
+  Speed: 14
+  Item: {fileID: 21300000, guid: 39ee91769dc2f7442abbb80bdfea039d, type: 3}
+  Name: Helmet1
+  type: 1
+  price: 45

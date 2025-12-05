@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class TreninngPlaceView : MonoBehaviour
 {
     [SerializeField] private Button returnToCityButttonTreningPlace;
+    [SerializeField] private GameObject RootTreningPLace;
 
     public event Action OnTrenningPlaceReturnToCity;
 

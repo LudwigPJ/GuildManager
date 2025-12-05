@@ -42,7 +42,7 @@ public class TavernController : IDisposable
     public IEnumerator QuestTimerCorutine(QuestModel _questModel)
     {
 
-        while (_questModel.QuestAllTime >= 0)
+        while (_questModel.QuestAllTime > 0f)
         {
 
             if(CurrentQuestModel == _questModel)
@@ -51,7 +51,7 @@ public class TavernController : IDisposable
             }
 
 
-            _questModel.QuestAllTime -= Time.deltaTime;
+            _questModel.ReduceQuestTime(Time.deltaTime);
             yield return null;
 
 
