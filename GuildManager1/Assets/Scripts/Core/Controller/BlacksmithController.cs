@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Core.Config.ItemsConfig;
 using Assets.Scripts.Core.Model.ItemsModel;
-using Assets.Scripts.Core.Model.QuestModel;
+using Assets.Scripts.Core.Model;
+using Assets.Scripts.Core.Storages;
 using Assets.Scripts.Core.View;
 using Assets.Scripts.Core.View.ItemView;
 using JetBrains.Annotations;
@@ -11,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using Zenject;
 using static UnityEditor.Progress;
 
 namespace Assets.Scripts.Core.Controller.Blacksmith
@@ -21,29 +23,25 @@ namespace Assets.Scripts.Core.Controller.Blacksmith
         private HeroView _heroView;
         private List <HeroView> heroViews = new List<HeroView>();
         private BlackSmithView _smithView;
-        private List <ItemModel> _ItemModels = new List<ItemModel>();
+        private BlackSmithStorage SmithStorage;
         private List <ItemView> _ItemView = new List<ItemView>();
-        private HeroModel SelectedHero;
+        
         private ItemView ItemViewPref;
-        private Lazy<ShopController> ShopController;
+        private LazyInject<ShopController> ShopController;
+        public HeroModel SelectedHero;
 
 
-
-       public BlacksmithController(ControllerHero controllerHero, HeroView heroView, BlackSmithView smithView, List<ItemsConfig> itemsConfig, ItemView _itemViewPref,Lazy <ShopController> _shopController )
+        public BlacksmithController(ControllerHero controllerHero, [Inject(Id = "SellPrefItemView")] ItemView _ItemViewPref , [Inject(Id = "Book")] HeroView heroView, BlackSmithView smithView, LazyInject <ShopController> _shopController, BlackSmithStorage _smithStorage )
         {
-            ItemViewPref = _itemViewPref;
+            
             _smithView = smithView;
             _ControllerHero = controllerHero;
-            _heroView = heroView;
+            ItemViewPref = _ItemViewPref;
             ShopController = _shopController;
+            _heroView = heroView;
+            SmithStorage  = _smithStorage;
 
 
-            foreach (ItemsConfig ItemCon in itemsConfig)
-            {
-
-                _ItemModels.Add(ItemCon.GetItemModel());
-
-            }
 
             RefreshItemSmith();
             _smithView.OnArmorCliced += SortItems;
@@ -55,51 +53,60 @@ namespace Assets.Scripts.Core.Controller.Blacksmith
 
             _smithView.OnSlotHelmetCliced += () =>
             {
-                if (SelectedHero.itemHelmetModel != null)
+                if (SelectedHero != null)
                 {
-                    SelectedHero.itemHelmetModel.ItemEquiped = false;
+                    if (SelectedHero.itemHelmetModel != null)
+                    {
+                        SelectedHero.itemHelmetModel.ItemEquiped = false;
+                    }
+                    SelectedHero.itemHelmetModel = null;
+                    SortItems(EItemType.Helmet);
+                    _smithView._ChoisenHero.RefreshHero(SelectedHero);
+                    ShopController.Value.RefreshViews();
                 }
-                SelectedHero.itemHelmetModel = null;
-                SortItems(EItemType.Helmet);
-                _smithView._ChoisenHero.RefreshHero(SelectedHero);
-                ShopController.Value.RefreshViews();
-
             };
             _smithView.OnSlotArmorCliced += () =>
             {
-                if (SelectedHero.itemArmorModel != null)
+                if (SelectedHero != null)
                 {
-                    SelectedHero.itemArmorModel.ItemEquiped = false;
+                    if (SelectedHero.itemArmorModel != null)
+                    {
+                        SelectedHero.itemArmorModel.ItemEquiped = false;
+                    }
+                    SelectedHero.itemArmorModel = null;
+                    SortItems(EItemType.Armor);
+                    _smithView._ChoisenHero.RefreshHero(SelectedHero);
+                    ShopController.Value.RefreshViews();
                 }
-                SelectedHero.itemArmorModel = null;
-                SortItems(EItemType.Armor);
-                _smithView._ChoisenHero.RefreshHero(SelectedHero);
-                ShopController.Value.RefreshViews();
-
             };
             _smithView.OnSlotBootsCliced += () =>
             {
-                if (SelectedHero.itemBootsModel != null)
+                if (SelectedHero != null)
                 {
-                    SelectedHero.itemBootsModel.ItemEquiped = false;
+                    if (SelectedHero.itemBootsModel != null)
+                    {
+                        SelectedHero.itemBootsModel.ItemEquiped = false;
+                    }
+                    SelectedHero.itemBootsModel = null;
+                    SortItems(EItemType.Boots);
+                    _smithView._ChoisenHero.RefreshHero(SelectedHero);
+                    ShopController.Value.RefreshViews();
                 }
-                SelectedHero.itemBootsModel = null;
-                SortItems(EItemType.Boots);
-                _smithView._ChoisenHero.RefreshHero(SelectedHero);
-                ShopController.Value.RefreshViews();
-
             };
             _smithView.OnSlotPantsCliced += () =>
             {
-                if (SelectedHero.itemPantsModel != null)
+                if(SelectedHero != null)
                 {
-                    SelectedHero.itemPantsModel.ItemEquiped = false;
-                }
-                SelectedHero.itemPantsModel = null;
-                SortItems(EItemType.Pants);
-                _smithView._ChoisenHero.RefreshHero(SelectedHero);
-                ShopController.Value.RefreshViews();
 
+                    if (SelectedHero.itemPantsModel != null)
+                    {
+                        SelectedHero.itemPantsModel.ItemEquiped = false;
+                    }
+                    SelectedHero.itemPantsModel = null;
+                    SortItems(EItemType.Pants);
+                    _smithView._ChoisenHero.RefreshHero(SelectedHero);
+                    ShopController.Value.RefreshViews();
+                }
             };
 
 
@@ -111,12 +118,12 @@ namespace Assets.Scripts.Core.Controller.Blacksmith
         {
             
 
-            List<ItemModel> ItemSortModels = _ItemModels.Where(ItemModelSort => ItemModelSort.type == ItemType && ItemModelSort.ItemEquiped == false).ToList();
+            List<ItemModel> ItemSortModels = SmithStorage.BlackSmithModel.ItemModels.Where(ItemModelSort => ItemModelSort.type == ItemType && ItemModelSort.ItemEquiped == false).ToList();
             _ItemView.Select(ItemOff =>
             {
                 ItemOff.gameObject.SetActive(false);
                 return ItemOff;
-            }).Where(ItemViewSort => ItemSortModels.Any(ItemModelOn => _ItemModels.IndexOf(ItemModelOn) == _ItemView.IndexOf(ItemViewSort))).Select(ItemOn =>
+            }).Where(ItemViewSort => ItemSortModels.Any(ItemModelOn => SmithStorage.BlackSmithModel.ItemModels.IndexOf(ItemModelOn) == _ItemView.IndexOf(ItemViewSort))).Select(ItemOn =>
             {
                 ItemOn.gameObject.SetActive(true);
                 return ItemOn;
@@ -153,7 +160,7 @@ namespace Assets.Scripts.Core.Controller.Blacksmith
                 };
             }
 
-            foreach (ItemModel _itemMod in _ItemModels)
+            foreach (ItemModel _itemMod in SmithStorage.BlackSmithModel.ItemModels)
             {
                 _ItemView.Add(GameObject.Instantiate(ItemViewPref, _smithView._ItemsRootBlacksmith.transform));
                 _ItemView.Last().RefreshItem(_itemMod);
@@ -165,14 +172,14 @@ namespace Assets.Scripts.Core.Controller.Blacksmith
                 {
                     if (SelectedHero != null)
                     {
-                        EItemType type = _ItemModels[_ItemView.IndexOf(item)].type;
+                        EItemType type = SmithStorage.BlackSmithModel.ItemModels[_ItemView.IndexOf(item)].type;
                         if (type == EItemType.Helmet)
                         {
                             if (SelectedHero.itemHelmetModel != null)
                             {
                                 SelectedHero.itemHelmetModel.ItemEquiped = false;
                             }
-                            SelectedHero.itemHelmetModel = _ItemModels[_ItemView.IndexOf(item)];
+                            SelectedHero.itemHelmetModel = SmithStorage.BlackSmithModel.ItemModels[_ItemView.IndexOf(item)];
                             SelectedHero.itemHelmetModel.ItemEquiped = true;
                             SortItems(EItemType.Helmet);
                         }
@@ -182,7 +189,7 @@ namespace Assets.Scripts.Core.Controller.Blacksmith
                             {
                                 SelectedHero.itemArmorModel.ItemEquiped = false;
                             }
-                            SelectedHero.itemArmorModel = _ItemModels[_ItemView.IndexOf(item)];
+                            SelectedHero.itemArmorModel = SmithStorage.BlackSmithModel.ItemModels[_ItemView.IndexOf(item)];
                             SelectedHero.itemArmorModel.ItemEquiped = true;
                             SortItems(EItemType.Armor);
                         }
@@ -190,9 +197,9 @@ namespace Assets.Scripts.Core.Controller.Blacksmith
                         {
                             if (SelectedHero.itemBootsModel != null)
                             {
-                                SelectedHero.itemBootsModel.ItemEquiped = false;
+                               SelectedHero.itemBootsModel.ItemEquiped = false;
                             }
-                            SelectedHero.itemBootsModel = _ItemModels[_ItemView.IndexOf(item)];
+                            SelectedHero.itemBootsModel = SmithStorage.BlackSmithModel.ItemModels[_ItemView.IndexOf(item)];
                             SelectedHero.itemBootsModel.ItemEquiped = true;
                             SortItems(EItemType.Boots);
                         }
@@ -202,7 +209,7 @@ namespace Assets.Scripts.Core.Controller.Blacksmith
                             {
                                 SelectedHero.itemPantsModel.ItemEquiped = false;
                             }
-                            SelectedHero.itemPantsModel = _ItemModels[_ItemView.IndexOf(item)];
+                            SelectedHero.itemPantsModel = SmithStorage.BlackSmithModel.ItemModels[_ItemView.IndexOf(item)];
                             SelectedHero.itemPantsModel.ItemEquiped = true;
                             SortItems(EItemType.Pants);
                         }
@@ -217,6 +224,6 @@ namespace Assets.Scripts.Core.Controller.Blacksmith
             }
         }
 
-        public List<ItemModel> itemModels { get { return _ItemModels;  } }
+        public List<ItemModel> itemModels { get { return SmithStorage.BlackSmithModel.ItemModels;  } }
     }
 }

@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
+using Zenject;
 
 namespace Assets.Scripts.Core.Controller
 {
@@ -22,21 +23,20 @@ namespace Assets.Scripts.Core.Controller
         private List<ItemModel> itemByeModels = new List<ItemModel>();
         private ShopVIew ShopView;
         private ItemView ItemByeViewPref;
-        private ItemView ItemSellViewPref;
+        
         private ItemModel SelectItem;
         private GoldController goldController;
         
 
 
 
-        public ShopController(List<ItemsConfig> _itemsConfigs, ItemView _itemByeView, ItemView _itemSellView, BlacksmithController _blacksmithController, ShopVIew _ShopView, GoldController _goldColntoller)
+        public ShopController([Inject(Id = "ItemsByeConfigs")] List<ItemsConfig> _itemsConfigs, [Inject(Id = "ItemViewByePref")] ItemView _ItemByeViewPref, BlacksmithController _blacksmithController, ShopVIew _ShopView, GoldController _goldColntoller)
         {
-            ItemSellViewPref = _itemSellView;
-            ItemByeViewPref = _itemByeView;
+            
             BlacksmithController = _blacksmithController;
             ShopView = _ShopView;
             goldController = _goldColntoller;
-            
+            ItemByeViewPref = _ItemByeViewPref;
 
 
 

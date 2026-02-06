@@ -1,3 +1,5 @@
+using Assets.Scripts.Core.Controller;
+using Assets.Scripts.Core.Controller.Blacksmith;
 using System;
 using UnityEngine;
 
@@ -9,7 +11,10 @@ public class LocatonSwapController :IDisposable
     private TreninngPlaceView _TreninngPlaceView;
     private CasarmView _CasarmView;
     private ShopVIew _ShopView;
-    public LocatonSwapController (CityView cityView, TavernView tavernView,BlackSmithView blackSmithView, TreninngPlaceView treninngPlaceView, CasarmView casarmView, ShopVIew shopVIew)
+    private TreningPlaceController _TreningPlaceController;
+    private BlacksmithController _BlacksmithController;
+    private TavernController tavernController;
+    public LocatonSwapController (CityView cityView, TavernView tavernView,BlackSmithView blackSmithView, TreninngPlaceView treninngPlaceView, CasarmView casarmView, ShopVIew shopVIew, TreningPlaceController treningPlaceController, BlacksmithController blacksmithController, TavernController _tavernController)
     {
         CityView = cityView;
         TavernView = tavernView;
@@ -17,6 +22,10 @@ public class LocatonSwapController :IDisposable
         _TreninngPlaceView = treninngPlaceView;
         _CasarmView = casarmView;
         _ShopView = shopVIew;
+        _TreningPlaceController = treningPlaceController;
+        _BlacksmithController = blacksmithController;
+        tavernController = _tavernController;
+
         CityView.OnReturnClicked += OnButtonOff;
         TavernView.OnOffReturnClicked += OnButtonReturn;
         _BlackSmithView.OnBlacksmithReturnClicked += OnButtonReturn;
@@ -56,23 +65,28 @@ public class LocatonSwapController :IDisposable
 
     private void OnButtonTreningPlace()
     {
+        _TreningPlaceController.RefreshHeroesInTreningPlace();
         CityView.gameObject.SetActive(false);
         TavernView.gameObject.SetActive(false);
         _BlackSmithView.gameObject.SetActive(false);
         _TreninngPlaceView.gameObject.SetActive(true);
         _CasarmView.gameObject.SetActive(false);
         _ShopView.gameObject.SetActive(false);
+        
+
 
     }
 
     private void OnButtonBlacksmith()
     {
+        _BlacksmithController.RefreshItemSmith();
         CityView.gameObject.SetActive(false);
         _BlackSmithView.gameObject.SetActive(true);
         TavernView.gameObject.SetActive(false);
         _TreninngPlaceView.gameObject.SetActive(false);
         _CasarmView.gameObject.SetActive(false);
         _ShopView.gameObject.SetActive(false);
+
     }
     private void OnButtonReturn()
     {
@@ -86,12 +100,15 @@ public class LocatonSwapController :IDisposable
 
     private void OnButtonOff()
     {
+        
         TavernView.gameObject.SetActive (true);
         CityView.gameObject.SetActive(false);
         _BlackSmithView.gameObject.SetActive(false);
         _TreninngPlaceView.gameObject.SetActive(false);
         _CasarmView.gameObject.SetActive(false);
         _ShopView.gameObject.SetActive(false);
+
+        
     }
 
     public void Dispose()

@@ -1,8 +1,10 @@
 ﻿using Assets.Scripts.Core.Model.ItemsModel;
+using Newtonsoft.Json;
+using System;
 using UnityEngine;
-
-namespace Assets.Scripts.Core.Model.QuestModel
+namespace Assets.Scripts.Core.Model
 {
+    [Serializable]
     public class QuestModel
     {
         private float _remainingQuestTime;
@@ -17,19 +19,19 @@ namespace Assets.Scripts.Core.Model.QuestModel
             _remainingQuestTime = _questAllTime;
         }
 
-        public Sprite Sprite { get; set; }
-        public int DangerQuest {  get; set; }
-        public int ExperienseQuest { get; set; }
-        public int GoldQuest { get; set; }
-        public string QuestName { get; set; }
+        [JsonIgnore] public Sprite Sprite; 
+        public int DangerQuest; 
+        public int ExperienseQuest; 
+        public int GoldQuest; 
+        public string QuestName;
 
-        public bool QuestStart { get; set; }
+        public bool QuestStart; 
 
-        public bool QuestEnded {  get; set; }
-        public HeroModel _HeroModel { get; set; }
-
-        public float QuestAllTime 
-        {  
+        public bool QuestEnded;
+        public HeroModel _HeroModel; 
+        
+        public float QuestAllTime
+        {
             get
             {
                 float heroParametersSum = GetHeroParametersSum();
@@ -39,7 +41,7 @@ namespace Assets.Scripts.Core.Model.QuestModel
                 }
 
                 return _remainingQuestTime / heroParametersSum;
-            } 
+            }
         }
 
         public void ReduceQuestTime(float deltaTime)
@@ -80,6 +82,5 @@ namespace Assets.Scripts.Core.Model.QuestModel
 
             return itemModel.TotalParameters;
         }
-
     }
 }

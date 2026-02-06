@@ -1,6 +1,8 @@
-using Assets.Scripts.Core.Controller.QuestController;
+using Assets.Scripts.Core.Controller;
 using Assets.Scripts.Core.Controller.ResoursController;
-using Assets.Scripts.Core.Model.QuestModel;
+using Assets.Scripts.Core.Model;
+using Assets.Scripts.Core.Storages;
+using Assets.Scripts.Core.View;
 using Assets.Scripts.Core.View.QuestVIew;
 using System;
 using System.Collections;
@@ -8,10 +10,11 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using Zenject;
 
 public class TavernController : IDisposable
 {
-    private QuestController QuestController;
+    private QuestStorage questStorage;
     private QuestView QuestView;
     private BookView bookview;
     private TavernView tavernView;
@@ -20,12 +23,15 @@ public class TavernController : IDisposable
     private List<HeroView> heroBookViews = new List<HeroView>();
     private List<QuestView> questViews = new List<QuestView>();
     private QuestStartView QuestStartView;
-    private QuestModel CurrentQuestModel;
+    private TavernStorage TavernStorage;
     private GoldController GoldController;
+    private SaveLoadSystemController SaveLoadSystemController;
 
-    public TavernController(BookView _bookview, TavernView _tavernView, ControllerHero _ControllerHero, HeroView _heroView, QuestView _qestView, QuestController _questController, QuestStartView _questStartView, GoldController goldController)
+    public TavernController(BookView _bookview, TavernView _tavernView, ControllerHero _ControllerHero, [Inject(Id = "Book")] HeroView _heroView, QuestView _qestView, QuestStorage _questStorage , QuestStartView _questStartView, GoldController goldController, TavernStorage _TavernStorage, SaveLoadSystemController _saveLoadSystemController)
     {
-        QuestController = _questController;
+        SaveLoadSystemController = _saveLoadSystemController;
+        TavernStorage = _TavernStorage;
+        questStorage = _questStorage;
         QuestView = _qestView;
         heroViewBook = _heroView;
         ControllerHero = _ControllerHero;
@@ -35,17 +41,17 @@ public class TavernController : IDisposable
         GoldController = goldController;
         tavernView.OnButtonBookClicked += ShowBook;
         bookview.OnOffReturnClicked += CloseBook;
-
+        tavernView.OnSaveButtonCliced += SaveLoadSystemController.Save;
 
     }
 
-    public IEnumerator QuestTimerCorutine(QuestModel _questModel)
+    public IEnumerator QuestTimerCorutine(QuestModel _questModel, GameObject handler)
     {
-
+        QuestStartView.StartTimer();
         while (_questModel.QuestAllTime > 0f)
         {
 
-            if(CurrentQuestModel == _questModel)
+            if(TavernStorage.QuestStorage.QuestModelSystem == _questModel)
             {
                 QuestStartView.QuestViewTime(_questModel.QuestAllTime);
             }
@@ -59,16 +65,29 @@ public class TavernController : IDisposable
 
         
         }
-        if (_questModel == CurrentQuestModel)
+        if (_questModel == TavernStorage.QuestStorage.QuestModelSystem)
         {
             QuestStartView.Close();
             
         }
         GoldController.GoldPlus(_questModel.GoldQuest);
-        QuestView tmp = questViews[QuestController._QuestModels.IndexOf(_questModel)];        
-        questViews.Remove(tmp);
-        GameObject.Destroy(tmp.gameObject);
-        QuestController._QuestModels.Remove(_questModel);
+        _questModel._HeroModel.AddExperienseAndlevelUp(_questModel.ExperienseQuest);
+        int index = ControllerHero.HeroModels.IndexOf(_questModel._HeroModel);
+        if (tavernView.isActiveAndEnabled)
+        {
+            heroBookViews[index].RefreshHero(_questModel._HeroModel);
+
+            
+            QuestView tmp = questViews[questStorage.QuestModel.QuestModels1.IndexOf(_questModel)];
+            questViews.Remove(tmp);
+
+            GameObject.Destroy(tmp.gameObject);
+            
+           
+        }
+        _questModel._HeroModel = null;
+        questStorage.QuestModel.QuestModels1.Remove(_questModel);
+        GameObject.Destroy(handler);
     }
 
 
@@ -78,22 +97,31 @@ public class TavernController : IDisposable
 
     
     public void ShowBook()
+
     {
-        bookview.gameObject.SetActive(true);
-        QuestStartView.OnQuestStart += () =>
+        foreach (Transform heroView in bookview._heroObjectBookRoot.transform)
         {
+            GameObject.Destroy(heroView.gameObject);
+        }
+        heroBookViews.Clear();
+        foreach (Transform QuestView in bookview._questObjectBookRoot.transform)
+        {
+            GameObject.Destroy(QuestView.gameObject);
+        }
+        questViews.Clear();
 
-            questViews[QuestController._QuestModels.IndexOf(CurrentQuestModel)].StartCoroutine(QuestTimerCorutine(CurrentQuestModel));
-            CurrentQuestModel.QuestStart = true;
 
-        };
-        foreach (QuestModel _questModel in QuestController._QuestModels)
+
+        bookview.gameObject.SetActive(true);
+        QuestStartView.OnQuestStart += QuestStart;
+       
+        foreach (QuestModel _questModel in questStorage.QuestModel.QuestModels1)
         {
             questViews.Add(GameObject.Instantiate(QuestView, bookview._questObjectBookRoot.transform));
         }
-        for (int i = 0; i < QuestController._QuestModels.Count; i++)
+        for (int i = 0; i < questStorage.QuestModel.QuestModels1.Count; i++)
         {
-            questViews[i].RefreshQuest(QuestController._QuestModels[i]);
+            questViews[i].RefreshQuest(questStorage.QuestModel.QuestModels1[i]);
         }
         foreach (HeroModel _heroMod in ControllerHero.HeroModels)
         {
@@ -107,8 +135,8 @@ public class TavernController : IDisposable
         {
             view.OnQuestOpen += () =>
             {
-                QuestStartView.Show(QuestController._QuestModels[questViews.IndexOf(view)]);
-                CurrentQuestModel = QuestController._QuestModels[questViews.IndexOf(view)];
+                QuestStartView.Show(questStorage.QuestModel.QuestModels1[questViews.IndexOf(view)]);
+                TavernStorage.QuestStorage.QuestModelSystem = questStorage.QuestModel.QuestModels1[questViews.IndexOf(view)];
 
 
             };
@@ -117,22 +145,23 @@ public class TavernController : IDisposable
         {
             view.OnHeroClick += () =>
             {
-                if (CurrentQuestModel.QuestStart == true )
+
+                if (TavernStorage.QuestStorage.QuestModelSystem == null || TavernStorage.QuestStorage.QuestModelSystem.QuestStart == true )
                 {
                     return;
                 }
                 bool poot = true;
-                if (CurrentQuestModel._HeroModel == ControllerHero.HeroModels[heroBookViews.IndexOf(view)])
+                if (TavernStorage.QuestStorage.QuestModelSystem._HeroModel == ControllerHero.HeroModels[heroBookViews.IndexOf(view)])
                 {
-                    CurrentQuestModel._HeroModel = null;
-                    QuestStartView.Show(CurrentQuestModel);
+                    TavernStorage.QuestStorage.QuestModelSystem._HeroModel = null;
+                    QuestStartView.Show(TavernStorage.QuestStorage.QuestModelSystem);
                     return;
                 }
 
 
-                for (int i = 0; i < QuestController._QuestModels.Count; i++)
+                for (int i = 0; i < questStorage.QuestModel.QuestModels1.Count; i++)
                 {
-                    if (ControllerHero.HeroModels[heroBookViews.IndexOf(view)] == QuestController._QuestModels[i]._HeroModel)
+                    if (ControllerHero.HeroModels[heroBookViews.IndexOf(view)] == questStorage.QuestModel.QuestModels1[i]._HeroModel)
                     {
                         poot = false;
 
@@ -140,7 +169,7 @@ public class TavernController : IDisposable
                 }
                 if (poot == true)
                 {
-                    CurrentQuestModel._HeroModel = ControllerHero.HeroModels[heroBookViews.IndexOf(view)];
+                    TavernStorage.QuestStorage.QuestModelSystem._HeroModel = ControllerHero.HeroModels[heroBookViews.IndexOf(view)];
                     QuestStartView.HeroConnect(ControllerHero.HeroModels[heroBookViews.IndexOf(view)]);
                 }
                 
@@ -151,6 +180,15 @@ public class TavernController : IDisposable
 
     }
 
+
+    private void QuestStart()
+    {
+        GameObject handler = new GameObject();
+        handler.AddComponent<CorutineHeandler>();
+        handler.GetComponent<CorutineHeandler>().StartCoroutine(QuestTimerCorutine(TavernStorage.QuestStorage.QuestModelSystem, handler));
+
+        TavernStorage.QuestStorage.QuestModelSystem.QuestStart = true;
+    }
     public void CloseBook()
     {
 
@@ -166,6 +204,8 @@ public class TavernController : IDisposable
             GameObject.Destroy(QuestView.gameObject);
         }
         questViews.Clear();
+        QuestStartView.OnQuestStart -= QuestStart;
+
     }
 
 

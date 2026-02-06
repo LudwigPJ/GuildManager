@@ -17,4 +17,4 @@ MonoBehaviour:
   GoldQuest: 500
   ExperienseQuest: 100
   NameQuest: Quest2
-  QuestAllTime: 15
+  QuestAllTime: 300

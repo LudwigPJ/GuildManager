@@ -1,5 +1,6 @@
 using Assets.Scripts.Core.Controller.Blacksmith;
 using Assets.Scripts.Core.Controller.ResoursController;
+using Assets.Scripts.Core.Storages;
 using Assets.Scripts.Core.View.ItemView;
 using System;
 using System.Collections.Generic;
@@ -7,55 +8,45 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using Zenject;
 
 public class ControllerHero
 {
     private HeroView HeroViewPref;
     private HeroView HeroByeViewPref;
-    private List<HeroConfig> HeroConfigs =new List<HeroConfig>(); 
-    private List<HeroConfig> HeroByeConfigs = new List<HeroConfig>();
+    
     private CasarmView _CasarmView;
-    private List<HeroModel> _HeroModels = new List<HeroModel>();
-    private List<HeroModel> _HeroByeModels = new List<HeroModel>();
+    private HeroModelStorage heroModelStorage;
     private List<HeroView> _HeroViews = new List<HeroView>();
     private List<HeroView> _HeroByeViews = new List<HeroView>();
     private CityView CityView;
-    private HeroModel SelectHero;
+    
     private GoldController GoldController;
-    private Lazy<BlacksmithController> BlacksmithController;
+    private LazyInject<BlacksmithController> BlacksmithController;
 
 
-    public ControllerHero(HeroView _heroViewPref, List<HeroConfig> _heroConfigs,CasarmView _casarmView, CityView _cityView, HeroView _heroByeViewPref, List<HeroConfig>_HeroByeConfigs, GoldController _GoldController, Lazy<BlacksmithController> _BlacksmithContorller )
+    public ControllerHero(CasarmView _casarmView, CityView _cityView, GoldController _GoldController, LazyInject<BlacksmithController> _BlacksmithContorller, [Inject(Id = "Cassarm")] HeroView _HeroViewPref, [Inject(Id = "Bye")] HeroView _HeroByeViewPref, HeroModelStorage _heroModelStorage)
     {
-        HeroViewPref = _heroViewPref;
-        HeroConfigs = _heroConfigs;
-        _CasarmView = _casarmView;
+
+        heroModelStorage = _heroModelStorage; 
+         _CasarmView = _casarmView;
         CityView = _cityView;
-        HeroByeViewPref = _heroByeViewPref;
-        HeroByeConfigs = _HeroByeConfigs;
+        HeroViewPref = _HeroViewPref;
+        HeroByeViewPref = _HeroByeViewPref;
         GoldController = _GoldController;
         BlacksmithController = _BlacksmithContorller;
+        
 
         CityView.OnToCasarmClicked += () =>
         {
-            for (int i = 0; i < _HeroModels.Count; i++)
+            for (int i = 0; i < heroModelStorage.HeroSystemModel.HeroModelsSystem.Count; i++)
             {
-                _HeroViews[i].RefreshHero(_HeroModels[i]);
+                _HeroViews[i].RefreshHero(heroModelStorage.HeroSystemModel.HeroModelsSystem[i]);
             }
         };
-        foreach (HeroConfig _heroCon in HeroConfigs)
-        {
-            
-            _HeroModels.Add(_heroCon.GetHeroModel());
-            
-        }
+        
 
-        foreach (HeroConfig _heroCon in HeroByeConfigs)
-        {
-
-            _HeroByeModels.Add(_heroCon.GetHeroModel());
-
-        }
+        
 
         RefreshHeroes();
 
@@ -76,12 +67,12 @@ public class ControllerHero
         _HeroViews.Clear();
         _HeroByeViews.Clear();
 
-        foreach (HeroModel _heroMod in _HeroModels)
+        foreach (HeroModel _heroMod in heroModelStorage.HeroSystemModel.HeroModelsSystem)
         {
             _HeroViews.Add(GameObject.Instantiate(HeroViewPref, _CasarmView._heroObjectRoot.transform));
             _HeroViews.Last().RefreshHero(_heroMod);
         }
-        foreach (HeroModel _heroMod in _HeroByeModels)
+        foreach (HeroModel _heroMod in heroModelStorage.HeroSystemModel.HeroByeModelsSystem)
         {
             _HeroByeViews.Add(GameObject.Instantiate(HeroByeViewPref, _CasarmView._RootForByeHeroes.transform));
             _HeroByeViews.Last().RefreshHero(_heroMod);
@@ -99,7 +90,7 @@ public class ControllerHero
                 
                 _CasarmView.SelectByeHeroesButton(true);
                 int index = _HeroByeViews.IndexOf(view);
-                SelectHero = _HeroByeModels[index];
+                heroModelStorage.HeroSystemModel.SelectHeroSystem = heroModelStorage.HeroSystemModel.HeroByeModelsSystem[index];
             };
         }
 
@@ -109,18 +100,18 @@ public class ControllerHero
 
     public void ByeHeroes()
     {
-        if(SelectHero == null)
+        if (heroModelStorage.HeroSystemModel.SelectHeroSystem == null)
         {
             return;
         }
-        if (GoldController.GoldMinus(SelectHero._price))
+        if (GoldController.GoldMinus(heroModelStorage.HeroSystemModel.SelectHeroSystem._price))
         {
-            _HeroByeModels.Remove(SelectHero);
-            _HeroModels.Add(SelectHero);
+            heroModelStorage.HeroSystemModel.HeroByeModelsSystem.Remove(heroModelStorage.HeroSystemModel.SelectHeroSystem);
+            heroModelStorage.HeroSystemModel.HeroModelsSystem.Add(heroModelStorage.HeroSystemModel.SelectHeroSystem);
             RefreshHeroes();
             BlacksmithController.Value.RefreshItemSmith();
             _CasarmView.SelectByeHeroesButton(false);
-            SelectHero = null;
+            heroModelStorage.HeroSystemModel.SelectHeroSystem = null;
 
         }
     }
@@ -128,7 +119,7 @@ public class ControllerHero
 
 
 
-    public List<HeroModel> HeroModels { get { return _HeroModels; } }
+    public List<HeroModel> HeroModels { get { return heroModelStorage.HeroSystemModel.HeroModelsSystem; } }
 
 
 

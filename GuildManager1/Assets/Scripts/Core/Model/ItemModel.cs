@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Core.View;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Core.Model.ItemsModel
 {
+    [Serializable]
     public class ItemModel
     {
         public ItemModel(Sprite _Item, float _Hp, float _Speed, float _Demage, string _Name, EItemType _type, int _price)
@@ -21,24 +23,24 @@ namespace Assets.Scripts.Core.Model.ItemsModel
             Price = _price;
         }
 
-        public string Name { get; set; }
-        public float Demage { get; set; }
-        public float Hp { get; set; }
+        public string Name; 
+        public float Demage; 
+        public float Hp; 
 
-        public float Speed { get; set; }
+        public float Speed;
 
-        public Sprite Item { get; set; }
+        [JsonIgnore]public Sprite Item;
 
-        public EItemType type { get; set; }
+        public EItemType type;
 
-        public bool ItemEquiped { get; set; }
+        public bool ItemEquiped;
 
         public float TotalParameters
         {
             get { return Hp + Demage + Speed; }
         }
 
-        public int Price { get; set; }
+        public int Price;
         
     }
 }

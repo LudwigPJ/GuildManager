@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.Core.Model.QuestModel;
+﻿using Assets.Scripts.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;

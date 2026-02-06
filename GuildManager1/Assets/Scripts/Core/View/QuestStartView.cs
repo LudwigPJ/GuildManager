@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.Core.Model.QuestModel;
+﻿using Assets.Scripts.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +32,7 @@ namespace Assets.Scripts.Core.View.QuestVIew
         private void Start()
         {
             CloseQuestButton.onClick.AddListener(Close);
-            StartQuestButton.onClick.AddListener(StartTimer);
+            StartQuestButton.onClick.AddListener(()=> OnQuestStart?.Invoke());
         }
 
         public void Show(QuestModel _questmodel)
@@ -57,7 +57,7 @@ namespace Assets.Scripts.Core.View.QuestVIew
                 Timer.gameObject.SetActive(false);
                 StartQuestButton.gameObject.SetActive(true);
 
-                StartQuestButton.interactable = true;
+                StartQuestButton.interactable = false;
             }
             
             
@@ -67,7 +67,7 @@ namespace Assets.Scripts.Core.View.QuestVIew
                 Hero.color = new Color(1, 1, 1, 1f);
                 NameHero.text = _questmodel._HeroModel._name;
                 Hero.sprite = _questmodel._HeroModel._hero;
-
+                StartQuestButton.interactable = true;
             }
 
         }
@@ -83,7 +83,7 @@ namespace Assets.Scripts.Core.View.QuestVIew
             Timer.gameObject.SetActive(true);
             StartQuestButton.gameObject.SetActive(false);
             
-            OnQuestStart?.Invoke();
+            
         }
 
         public void HeroConnect(HeroModel _heroModel)
@@ -105,7 +105,7 @@ namespace Assets.Scripts.Core.View.QuestVIew
         private void OnDestroy()
         {
             CloseQuestButton.onClick.RemoveAllListeners();
-            StartQuestButton.onClick.RemoveAllListeners();
+            
         }
     }
 }

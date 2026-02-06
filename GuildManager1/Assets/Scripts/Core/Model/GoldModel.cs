@@ -7,14 +7,15 @@ using UnityEngine;
 
 namespace Assets.Scripts.Core.Model.GoldModel
 {
+    [Serializable] 
     public class GoldModel
-    {
+    {   
         public GoldModel(int _goldCount) 
         {
             GoldCount = _goldCount;
         }
 
-        public int GoldCount { get; set; }
+        public int GoldCount;
 
         
     }

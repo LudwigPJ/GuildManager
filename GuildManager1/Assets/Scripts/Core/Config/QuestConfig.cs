@@ -1,4 +1,4 @@
-using Assets.Scripts.Core.Model.QuestModel;
+using Assets.Scripts.Core.Model;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ConfigQuest", menuName = "config/configQuest")]

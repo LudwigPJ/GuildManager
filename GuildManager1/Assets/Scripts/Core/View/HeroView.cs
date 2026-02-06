@@ -17,6 +17,8 @@ public class HeroView : MonoBehaviour
     [SerializeField] Image HelmetView;
     [SerializeField] TMP_Text Price;
     [SerializeField] Image Galochka;
+    [SerializeField] TMP_Text level;
+    [SerializeField] Slider experiense;
 
 
     [SerializeField] Sprite BootsBaseSprite;
@@ -32,6 +34,7 @@ public class HeroView : MonoBehaviour
         demage.text = hero1._demage.ToString();
         Hp.text= hero1._hp.ToString();
         Speed.text = hero1._speed.ToString();
+
         if (Price != null)
         {
             Price.text = hero1._price.ToString();
@@ -56,6 +59,14 @@ public class HeroView : MonoBehaviour
             PantsView.sprite = hero1.itemPantsModel != null ? hero1.itemPantsModel.Item: PantsBaseSprite;
 
         }
+        if (level != null)
+        {
+            level.text = hero1._level.ToString();
+        }
+        if(experiense != null)
+        {
+            experiense.value =(float) hero1._experiense / (float)(100 + 20 * (hero1._level + 1));
+        }
     }
 
     public event Action OnHeroClick;
@@ -77,8 +88,11 @@ public class HeroView : MonoBehaviour
             Galochka.gameObject.SetActive(State);
         }
     }
-    
-    
+
+    public void HeroClickBUttonInteractable(bool status)
+    {
+        HeroClickButton.interactable = status;
+    }
 
 
     private void OnDestroy()

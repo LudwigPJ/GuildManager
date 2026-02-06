@@ -1,5 +1,5 @@
 ﻿using Assets.Scripts.Core.Model.ItemsModel;
-using Assets.Scripts.Core.Model.QuestModel;
+using Assets.Scripts.Core.Model;
 using Assets.Scripts.Core.View;
 using System;
 using System.Collections.Generic;

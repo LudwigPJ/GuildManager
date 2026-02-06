@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Core.Model.GoldModel;
+using Assets.Scripts.Core.Storages;
 using Assets.Scripts.Core.View.ResourseView;
 using System;
 using System.Collections.Generic;
@@ -11,41 +12,44 @@ namespace Assets.Scripts.Core.Controller.ResoursController
     public class GoldController
     {
         private GoldCountView _GoldcountView;
-        private GoldModel _Goldmodel;
+        private GoldStorage GoldStorage;
        
 
 
-        public GoldController(GoldCountView goldCountView)
+        public GoldController(GoldCountView goldCountView, GoldStorage _goldStorage)
         {
             
             _GoldcountView = goldCountView;
+            GoldStorage = _goldStorage;
+            
 
-            _Goldmodel = new GoldModel(0);
-
-            _GoldcountView.GoldCounterRefresh(_Goldmodel);
+            _GoldcountView.GoldCounterRefresh(GoldStorage.Goldmodel);
         }
        
         public void GoldPlus(int count)
         {
 
-            _Goldmodel.GoldCount += count;
-            _GoldcountView.GoldCounterRefresh(_Goldmodel);
+            GoldStorage.Goldmodel.GoldCount += count;
+            _GoldcountView.GoldCounterRefresh(GoldStorage.Goldmodel);
+            
         }
 
         public bool GoldMinus(int count)
         {
-            if (_Goldmodel.GoldCount >= count)
+            if (GoldStorage.Goldmodel.GoldCount >= count)
             {
-                _Goldmodel.GoldCount -= count;
-                _GoldcountView.GoldCounterRefresh(_Goldmodel);
+                GoldStorage.Goldmodel.GoldCount -= count;
+                _GoldcountView.GoldCounterRefresh(GoldStorage.Goldmodel);
                 return true;
             }
+            
             return false;
+
         }
 
         public int GetGoldCount()
         {
-            return _Goldmodel.GoldCount;
+            return GoldStorage.Goldmodel.GoldCount;
         }
     }
 }

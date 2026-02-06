@@ -9,10 +9,17 @@ public class HeroConfig : ScriptableObject
     [SerializeField] string Name;
     [SerializeField] Sprite Hero;
     [SerializeField] int Price;
+    
+
 
     public HeroModel GetHeroModel()
     {
-        HeroModel hero1 = new HeroModel(Hero, Name, Hp, Demage, Speed, Price);
+        int level = 1;
+        int experiense = 0;
+        HeroModel hero1 = new HeroModel(Hero, Name, Hp, Demage, Speed, Price, level, experiense);
         return hero1;
     }
+
+
+
 }
