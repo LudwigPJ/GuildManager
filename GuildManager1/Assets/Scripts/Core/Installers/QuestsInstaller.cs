@@ -12,5 +12,6 @@ public class QuestsInstaller : MonoInstaller<QuestsInstaller>
     {
         Container.BindInstance(Configs).AsSingle();
         Container.BindInterfacesAndSelfTo<QuestStorage>().AsSingle().NonLazy();
+        Container.BindInterfacesAndSelfTo<QuestFactory>().AsSingle().NonLazy();
     }
 }

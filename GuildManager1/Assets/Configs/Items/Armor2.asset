@@ -15,7 +15,7 @@ MonoBehaviour:
   Demage: 10
   Hp: 15
   Speed: 30
-  Item: {fileID: 21300000, guid: b8629a551368ea041868b74f2d7041fd, type: 3}
+  Item: Armor2Sprite
   Name: Armoro2
   type: 2
   price: 120

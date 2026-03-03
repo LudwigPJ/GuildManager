@@ -12,9 +12,9 @@ namespace Assets.Scripts.Core.Model.ItemsModel
     [Serializable]
     public class ItemModel
     {
-        public ItemModel(Sprite _Item, float _Hp, float _Speed, float _Demage, string _Name, EItemType _type, int _price)
+        public ItemModel(string _ItemId, float _Hp, float _Speed, float _Demage, string _Name, EItemType _type, int _price)
         {
-            Item = _Item;
+            ItemId = _ItemId;
             Hp = _Hp;
             Speed = _Speed;
             Demage = _Demage;
@@ -29,7 +29,7 @@ namespace Assets.Scripts.Core.Model.ItemsModel
 
         public float Speed;
 
-        [JsonIgnore]public Sprite Item;
+        public string ItemId;
 
         public EItemType type;
 

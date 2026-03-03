@@ -10,5 +10,6 @@ namespace Assets.Scripts.Core.Controller
     public class SaveModel
     {
         public List<object> savemodel = new List<object>();
+        public string Version = "1.0.0";
     }
 }

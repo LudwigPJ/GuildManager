@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d09fbd674262ce746887388640ea908c, type: 3}
   m_Name: Quest1
   m_EditorClassIdentifier: 
-  SpriteQuest: {fileID: 21300000, guid: 8eb7ea88e5789124f9d0fd5587c72668, type: 3}
+  SpriteQuest: Quest1Sprite
   DangerLevelQuest: 10
   GoldQuest: 300
   ExperienseQuest: 200
   NameQuest: Quest1
-  QuestAllTime: 300
+  QuestAllTime: 800

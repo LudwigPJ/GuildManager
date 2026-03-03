@@ -4,6 +4,7 @@ using Assets.Scripts.Core.Model;
 using Assets.Scripts.Core.Storages;
 using Assets.Scripts.Core.View;
 using Assets.Scripts.Core.View.QuestVIew;
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,8 +27,9 @@ public class TavernController : IDisposable
     private TavernStorage TavernStorage;
     private GoldController GoldController;
     private SaveLoadSystemController SaveLoadSystemController;
+    private QuestFactory QuestFactory;
 
-    public TavernController(BookView _bookview, TavernView _tavernView, ControllerHero _ControllerHero, [Inject(Id = "Book")] HeroView _heroView, QuestView _qestView, QuestStorage _questStorage , QuestStartView _questStartView, GoldController goldController, TavernStorage _TavernStorage, SaveLoadSystemController _saveLoadSystemController)
+    public TavernController(BookView _bookview, TavernView _tavernView, ControllerHero _ControllerHero, [Inject(Id = "Book")] HeroView _heroView, QuestView _qestView, QuestStorage _questStorage , QuestStartView _questStartView, GoldController goldController, TavernStorage _TavernStorage, SaveLoadSystemController _saveLoadSystemController, QuestFactory _questFactory)
     {
         SaveLoadSystemController = _saveLoadSystemController;
         TavernStorage = _TavernStorage;
@@ -39,14 +41,17 @@ public class TavernController : IDisposable
         tavernView = _tavernView;
         QuestStartView = _questStartView;
         GoldController = goldController;
+        QuestFactory = _questFactory;
         tavernView.OnButtonBookClicked += ShowBook;
         bookview.OnOffReturnClicked += CloseBook;
         tavernView.OnSaveButtonCliced += SaveLoadSystemController.Save;
+        UpdateQuestsTime();
 
     }
 
     public IEnumerator QuestTimerCorutine(QuestModel _questModel, GameObject handler)
     {
+        _questModel.StartTime = DateTime.UtcNow.ToString();
         QuestStartView.StartTimer();
         while (_questModel.QuestAllTime > 0f)
         {
@@ -87,15 +92,58 @@ public class TavernController : IDisposable
         }
         _questModel._HeroModel = null;
         questStorage.QuestModel.QuestModels1.Remove(_questModel);
+        QuestFactory.CreateNewQuest();
         GameObject.Destroy(handler);
     }
 
 
 
+    private void UpdateQuestsTime()
+    {
+        List<QuestModel> questdelete = new List<QuestModel>();
+        foreach (QuestModel quests in questStorage.QuestModel.QuestModels)
+        {
+            if (quests.QuestStart && quests._HeroModel != null && quests.StartTime != string.Empty)
+            {
+                if (DateTime.UtcNow < DateTime.Parse(quests.StartTime) + TimeSpan.FromSeconds(quests.QuestAllTime))
+                {
+
+
+                    TimeSpan OutTime = DateTime.UtcNow - DateTime.Parse(quests.StartTime);
+                    quests._remainingQuestTime -= (float)(OutTime * quests.GetHeroParametersSum()).TotalSeconds;
+                    GameObject handler = new GameObject();
+                    handler.AddComponent<CorutineHeandler>();
+                    handler.GetComponent<CorutineHeandler>().StartCoroutine(QuestTimerCorutine(quests, handler));
+
+                    
+
+                }
+                else
+                {
+
+                    GoldController.GoldPlus(quests.GoldQuest);
+                    quests._HeroModel.AddExperienseAndlevelUp(quests.ExperienseQuest);
+                    int index = ControllerHero.HeroModels.IndexOf(quests._HeroModel);
+                   
+                    quests._HeroModel = null;
+                    questdelete.Add(quests);
+                    
 
 
 
-    
+                }
+            }
+        }
+        foreach(QuestModel _questsdelete in questdelete)
+        {
+            questStorage.QuestModel.QuestModels.Remove(_questsdelete);
+            QuestFactory.CreateNewQuest();
+        }
+        questdelete.Clear();
+    }
+
+
+
     public void ShowBook()
 
     {

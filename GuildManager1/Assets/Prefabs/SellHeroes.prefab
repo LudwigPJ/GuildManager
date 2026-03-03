@@ -323,6 +323,9 @@ MonoBehaviour:
   HelmetView: {fileID: 0}
   Price: {fileID: 4704741142364196486}
   Galochka: {fileID: 5244762652813543799}
+  level: {fileID: 0}
+  experiense: {fileID: 0}
+  ImageConfig: {fileID: 11400000, guid: 20026fb56b5145a4b985b4f3fd9511a2, type: 2}
   BootsBaseSprite: {fileID: 0}
   ArmorBaseSprite: {fileID: 0}
   PantsBaseSprite: {fileID: 0}

@@ -972,7 +972,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.0012817383, y: -0.0018615723}
+  m_AnchoredPosition: {x: 0.0013427734, y: -0.0018310547}
   m_SizeDelta: {x: -0.5, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &83939782
@@ -3357,6 +3357,7 @@ MonoBehaviour:
   Hero: {fileID: 455282538}
   StartQuestButton: {fileID: 936106933}
   CloseQuestButton: {fileID: 349047164}
+  ImageConfig: {fileID: 11400000, guid: 20026fb56b5145a4b985b4f3fd9511a2, type: 2}
 --- !u!1 &381271057
 GameObject:
   m_ObjectHideFlags: 0
@@ -5113,6 +5114,7 @@ GameObject:
   - component: {fileID: 597059091}
   - component: {fileID: 597059093}
   - component: {fileID: 597059094}
+  - component: {fileID: 597059095}
   m_Layer: 5
   m_Name: CityImage
   m_TagString: Untagged
@@ -5199,6 +5201,7 @@ MonoBehaviour:
   ButtonToTreningPlace: {fileID: 1341929551}
   ButtonToCasarm: {fileID: 109920628}
   ButtonToShop: {fileID: 1058027834}
+  CityViewCanvasGroup: {fileID: 597059095}
 --- !u!114 &597059094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5211,6 +5214,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1a6fc74a9aca334fb87041c58bf041d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!225 &597059095
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 597059089}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &604680498
 GameObject:
   m_ObjectHideFlags: 0
@@ -11303,12 +11318,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_ReferenceResolution: {x: 1112.4, y: 529}
+  m_ScreenMatchMode: 1
+  m_MatchWidthOrHeight: 0.718
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96

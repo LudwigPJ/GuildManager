@@ -15,7 +15,7 @@ MonoBehaviour:
   Demage: 12
   Hp: 45
   Speed: 14
-  Item: {fileID: 21300000, guid: 39ee91769dc2f7442abbb80bdfea039d, type: 3}
+  Item: Helmet1Sprite
   Name: Helmet1
   type: 1
   price: 45

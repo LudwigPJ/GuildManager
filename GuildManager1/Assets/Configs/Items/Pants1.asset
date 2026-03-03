@@ -15,7 +15,7 @@ MonoBehaviour:
   Demage: 13
   Hp: 60
   Speed: 30
-  Item: {fileID: 21300000, guid: eedfa3ee6aa08274096071b3d593d209, type: 3}
+  Item: Pants1Sprite
   Name: Pants1
   type: 4
   price: 45

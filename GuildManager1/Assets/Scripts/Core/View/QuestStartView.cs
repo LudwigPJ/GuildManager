@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Core.Model;
+﻿using Assets.Scripts.Core.Config;
+using Assets.Scripts.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using TMPro;
 using Unity.VisualScripting;
-using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,6 +23,7 @@ namespace Assets.Scripts.Core.View.QuestVIew
         [SerializeField] Image Hero;
         [SerializeField] Button StartQuestButton;
         [SerializeField] Button CloseQuestButton;
+        [SerializeField] ImageConfig ImageConfig;
 
 
         public event Action OnQuestStart;
@@ -45,7 +46,7 @@ namespace Assets.Scripts.Core.View.QuestVIew
             NameQuest.text = _questmodel.QuestName;
             GoldForQuest.text = _questmodel.GoldQuest.ToString();
             ExperienseForQuest.text = _questmodel.ExperienseQuest.ToString();
-            Quest.sprite = _questmodel.Sprite;
+            Quest.sprite = ImageConfig.GetSpriteByID(_questmodel.QuestImageID);
             
             
             if(_questmodel.QuestStart == true)
@@ -66,7 +67,7 @@ namespace Assets.Scripts.Core.View.QuestVIew
             {
                 Hero.color = new Color(1, 1, 1, 1f);
                 NameHero.text = _questmodel._HeroModel._name;
-                Hero.sprite = _questmodel._HeroModel._hero;
+                Hero.sprite = ImageConfig.GetSpriteByID(_questmodel._HeroModel._heroImageID);
                 StartQuestButton.interactable = true;
             }
 
@@ -93,7 +94,7 @@ namespace Assets.Scripts.Core.View.QuestVIew
             StartQuestButton.interactable = true;
             Hero.color = new Color(1, 1, 1, 1f);
             NameHero.text = _heroModel._name;
-            Hero.sprite = _heroModel._hero;
+            Hero.sprite = ImageConfig.GetSpriteByID(_heroModel._heroImageID); 
         }
 
         public void Close()

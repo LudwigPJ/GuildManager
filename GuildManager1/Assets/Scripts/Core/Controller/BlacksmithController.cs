@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using Zenject;
-using static UnityEditor.Progress;
+
 
 namespace Assets.Scripts.Core.Controller.Blacksmith
 {

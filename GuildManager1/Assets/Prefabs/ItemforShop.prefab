@@ -108,6 +108,7 @@ MonoBehaviour:
   SelectItem: {fileID: 4013587966597548764}
   Price: {fileID: 7067560327414115196}
   Galochka: {fileID: 4210083695766579478}
+  ImageConfig: {fileID: 11400000, guid: 20026fb56b5145a4b985b4f3fd9511a2, type: 2}
 --- !u!114 &4013587966597548764
 MonoBehaviour:
   m_ObjectHideFlags: 0

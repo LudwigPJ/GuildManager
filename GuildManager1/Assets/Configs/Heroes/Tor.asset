@@ -16,5 +16,5 @@ MonoBehaviour:
   Hp: 60
   Speed: 30
   Name: Tor
-  Hero: {fileID: 21300000, guid: dbe1dacb12078ea479832dc389189995, type: 3}
+  Hero: TorSprite
   Price: 90

@@ -7,9 +7,9 @@ using UnityEngine;
 public class HeroModel
 {
     
-    public HeroModel(Sprite Hero, string Name, float Hp, float Demage, float Speed, int Price, int level, int experiense)
+    public HeroModel(string heroImageID, string Name, float Hp, float Demage, float Speed, int Price, int level, int experiense)
     {
-        _hero = Hero;
+        _heroImageID = heroImageID;
         _speed = Speed;
         _name = Name;
         _hp = Hp;
@@ -18,7 +18,7 @@ public class HeroModel
         _level = level;
         _experiense = experiense;
     }
-    [JsonIgnore]public Sprite _hero;
+    public string _heroImageID;
     public float _demage;
     public float _hp;
     public float _speed; 

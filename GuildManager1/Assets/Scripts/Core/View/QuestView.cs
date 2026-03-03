@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Core.Model;
+﻿using Assets.Scripts.Core.Config;
+using Assets.Scripts.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace Assets.Scripts.Core.View.QuestVIew
         [SerializeField] TMP_Text DangerQuest;
         [SerializeField] TMP_Text Name;
         [SerializeField] Button QuestOpenButton;
+        [SerializeField] ImageConfig ImageConfig;
 
         public event Action OnQuestOpen;
 
@@ -25,7 +27,7 @@ namespace Assets.Scripts.Core.View.QuestVIew
 
         public void RefreshQuest(QuestModel Quest1)
         {
-            Quest.sprite = Quest1.Sprite;
+            Quest.sprite = ImageConfig.GetSpriteByID(Quest1.QuestImageID);
             ExperienseQuest.text = Quest1.ExperienseQuest.ToString();
             GoldQuest.text = Quest1.GoldQuest.ToString();
             DangerQuest.text = Quest1.DangerQuest.ToString();

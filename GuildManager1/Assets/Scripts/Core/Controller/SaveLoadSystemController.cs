@@ -14,14 +14,15 @@ namespace Assets.Scripts.Core.Controller
     public class SaveLoadSystemController :IDisposable
     
     {
+        private string savedirectory = Path.Combine(Application.persistentDataPath,"Save");
         public static SaveLoadSystemController _instance;
         private List<IStorage> _storages;
         private SaveModel SaveModel = new SaveModel();
         private CompositeDisposable cDis = new CompositeDisposable();
         private JsonSerializerSettings _settings = new JsonSerializerSettings
         {
-            PreserveReferencesHandling = PreserveReferencesHandling.Objects,
-            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+            PreserveReferencesHandling = PreserveReferencesHandling.All,
+            ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
             NullValueHandling = NullValueHandling.Ignore,
             Formatting = Formatting.Indented,
             TypeNameHandling = TypeNameHandling.Auto,
@@ -47,23 +48,23 @@ namespace Assets.Scripts.Core.Controller
             }
 
             save =  JsonConvert.SerializeObject(SaveModel, _settings);
-            if (!File.Exists(@"C:\Users\Михаил\Desktop\SaveLoad.json"))
+            if (!File.Exists(savedirectory))
             {
-                File.Delete(@"C:\Users\Михаил\Desktop\SaveLoad.json");
+                File.Delete(savedirectory);
             }
-                File.WriteAllText(@"C:\Users\Михаил\Desktop\SaveLoad.json", save);
+                File.WriteAllText(savedirectory, save);
             Debug.Log(save);
         }
 
         public void Load()
         {
-            if (!File.Exists(@"C:\Users\Михаил\Desktop\SaveLoad.json")) 
+            if (!File.Exists(savedirectory)) 
             {
                 return;
             }
            
 
-            string load = File.ReadAllText(@"C:\Users\Михаил\Desktop\SaveLoad.json");
+            string load = File.ReadAllText(savedirectory);
             SaveModel = JsonConvert.DeserializeObject<SaveModel>(load, _settings);
             for (int i = 0; i < SaveModel.savemodel.Count; i++)
             {

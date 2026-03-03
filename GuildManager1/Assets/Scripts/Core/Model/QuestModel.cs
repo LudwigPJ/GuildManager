@@ -7,19 +7,19 @@ namespace Assets.Scripts.Core.Model
     [Serializable]
     public class QuestModel
     {
-        private float _remainingQuestTime;
+        public float _remainingQuestTime;
 
-        public QuestModel(Sprite _sprite, int _DangerQuest, int _ExperienseQuest, int _GoldQuest, string _questName, float _questAllTime)
+        public QuestModel(string _QuestImageID, int _DangerQuest, int _ExperienseQuest, int _GoldQuest, string _questName, float _questAllTime)
         {
-            Sprite = _sprite;
+            QuestImageID = _QuestImageID;
             DangerQuest = _DangerQuest;
             ExperienseQuest = _ExperienseQuest;
             GoldQuest = _GoldQuest;
             QuestName = _questName;
             _remainingQuestTime = _questAllTime;
         }
-
-        [JsonIgnore] public Sprite Sprite; 
+        public string StartTime;
+        public string QuestImageID; 
         public int DangerQuest; 
         public int ExperienseQuest; 
         public int GoldQuest; 
@@ -56,7 +56,7 @@ namespace Assets.Scripts.Core.Model
             _remainingQuestTime = Mathf.Max(_remainingQuestTime - deltaTime * timeScale, 0f);
         }
 
-        private float GetHeroParametersSum()
+        public float GetHeroParametersSum()
         {
             if (_HeroModel == null)
             {

@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e217de66986702418f41d517360c625, type: 3}
-  m_Name: Hero1
+  m_Name: Fireman
   m_EditorClassIdentifier: 
-  Demage: 10
-  Hp: 15
+  Demage: 20
+  Hp: 10
   Speed: 5
-  Name: Bernard
-  Hero: {fileID: 21300000, guid: dc8a7ced64b9cfb47afab233d3a4aab0, type: 3}
+  Name: FireMan
+  Hero: FiremanSprite
+  Price: 0

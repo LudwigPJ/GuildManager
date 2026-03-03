@@ -26,18 +26,19 @@ namespace Assets.Scripts.Core.Controller
         
         private ItemModel SelectItem;
         private GoldController goldController;
+        private ItemFabric itemFabric;
         
 
 
 
-        public ShopController([Inject(Id = "ItemsByeConfigs")] List<ItemsConfig> _itemsConfigs, [Inject(Id = "ItemViewByePref")] ItemView _ItemByeViewPref, BlacksmithController _blacksmithController, ShopVIew _ShopView, GoldController _goldColntoller)
+        public ShopController([Inject(Id = "ItemsByeConfigs")] List<ItemsConfig> _itemsConfigs, [Inject(Id = "ItemViewByePref")] ItemView _ItemByeViewPref, BlacksmithController _blacksmithController, ShopVIew _ShopView, GoldController _goldColntoller, ItemFabric _itemFabric)
         {
             
             BlacksmithController = _blacksmithController;
             ShopView = _ShopView;
             goldController = _goldColntoller;
             ItemByeViewPref = _ItemByeViewPref;
-
+            itemFabric = _itemFabric;
 
 
 
@@ -63,6 +64,9 @@ namespace Assets.Scripts.Core.Controller
             ShopView.OnSellItemCliced += SellCurretItem;
             ShopView.OnByeItemCliced += ByeCurretItem;
         }
+
+        public List<ItemModel> ItemByeModels => itemByeModels;
+
 
         private void SortSellItems(EItemType ItemType)
         {
@@ -204,7 +208,7 @@ namespace Assets.Scripts.Core.Controller
                 BlacksmithController.itemModels.Add(SelectItem);
                 RefreshViews();
                 BlacksmithController.RefreshItemSmith();
-
+                itemFabric.CreateNewItem();
                 
             }
         }

@@ -16,5 +16,5 @@ MonoBehaviour:
   Hp: 50
   Speed: 60
   Name: IRonMan
-  Hero: {fileID: 21300000, guid: 3b9b997e3856d724b974cd25f5d8e728, type: 3}
+  Hero: ironManSprite
   Price: 60

@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Core.Model.ItemsModel;
+﻿using Assets.Scripts.Core.Config;
+using Assets.Scripts.Core.Model.ItemsModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace Assets.Scripts.Core.View.ItemView
         [SerializeField] Button SelectItem;
         [SerializeField] TMP_Text Price;
         [SerializeField] Image Galochka;
+        [SerializeField] ImageConfig ImageConfig;
 
         
 
@@ -35,7 +37,7 @@ namespace Assets.Scripts.Core.View.ItemView
 
         public void RefreshItem(ItemModel itemModel)
         {
-            Item.sprite = itemModel.Item;
+            Item.sprite = ImageConfig.GetSpriteByID(itemModel.ItemId);
             Demage.text = itemModel.Demage.ToString();
             Hp.text = itemModel.Hp.ToString();
             Speed.text = itemModel.Speed.ToString();

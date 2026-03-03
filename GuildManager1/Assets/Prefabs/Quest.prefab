@@ -820,6 +820,7 @@ MonoBehaviour:
   DangerQuest: {fileID: 4330954983622746938}
   Name: {fileID: 4104944954333060802}
   QuestOpenButton: {fileID: 3762643281193183118}
+  ImageConfig: {fileID: 11400000, guid: 20026fb56b5145a4b985b4f3fd9511a2, type: 2}
 --- !u!114 &3762643281193183118
 MonoBehaviour:
   m_ObjectHideFlags: 0

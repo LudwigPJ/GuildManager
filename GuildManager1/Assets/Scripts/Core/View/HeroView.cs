@@ -1,3 +1,4 @@
+using Assets.Scripts.Core.Config;
 using System;
 using TMPro;
 using UnityEngine;
@@ -19,6 +20,7 @@ public class HeroView : MonoBehaviour
     [SerializeField] Image Galochka;
     [SerializeField] TMP_Text level;
     [SerializeField] Slider experiense;
+    [SerializeField] ImageConfig ImageConfig;
 
 
     [SerializeField] Sprite BootsBaseSprite;
@@ -29,7 +31,7 @@ public class HeroView : MonoBehaviour
 
     public void RefreshHero(HeroModel hero1)
     {
-        Hero.sprite = hero1._hero;
+        Hero.sprite = ImageConfig.GetSpriteByID(hero1._heroImageID);
         Name.text = hero1._name;
         demage.text = hero1._demage.ToString();
         Hp.text= hero1._hp.ToString();
@@ -41,22 +43,22 @@ public class HeroView : MonoBehaviour
         }
         if(BootsView != null)
         {
-            BootsView.sprite = hero1.itemBootsModel!=null ? hero1.itemBootsModel.Item: BootsBaseSprite;
+            BootsView.sprite = hero1.itemBootsModel!=null ? ImageConfig.GetSpriteByID(hero1.itemBootsModel.ItemId) : BootsBaseSprite;
 
         }
         if (HelmetView != null)
         {
-            HelmetView.sprite = hero1.itemHelmetModel !=null ? hero1.itemHelmetModel.Item: HelmetBaseSprite;
+            HelmetView.sprite = hero1.itemHelmetModel !=null ? ImageConfig.GetSpriteByID(hero1.itemHelmetModel.ItemId) : HelmetBaseSprite;
 
         }
         if (ArmorView != null)
         {
-            ArmorView.sprite = hero1.itemArmorModel != null  ? hero1.itemArmorModel.Item: ArmorBaseSprite;
+            ArmorView.sprite = hero1.itemArmorModel != null  ? ImageConfig.GetSpriteByID(hero1.itemArmorModel.ItemId) : ArmorBaseSprite;
 
         }
         if (PantsView != null)
         {
-            PantsView.sprite = hero1.itemPantsModel != null ? hero1.itemPantsModel.Item: PantsBaseSprite;
+            PantsView.sprite = hero1.itemPantsModel != null ? ImageConfig.GetSpriteByID(hero1.itemPantsModel.ItemId) : PantsBaseSprite;
 
         }
         if (level != null)

@@ -15,7 +15,7 @@ MonoBehaviour:
   Demage: 12
   Hp: 10
   Speed: 10
-  Item: {fileID: 21300000, guid: d8cc74d020a5db940b29ed2e871f4d2f, type: 3}
+  Item: Armor1Sprite
   Name: Armor1
   type: 2
   price: 150

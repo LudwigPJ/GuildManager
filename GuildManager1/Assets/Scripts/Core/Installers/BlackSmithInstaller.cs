@@ -21,5 +21,6 @@ public class BlackSmithInstaller : MonoInstaller
         Container.Bind<ItemView>().WithId("SellPrefItemView").FromInstance(SellitemViewPref).AsTransient();
         Container.Bind<BlackSmithView>().FromInstance(blackSmithView).AsSingle();
         Container.BindInterfacesAndSelfTo<BlacksmithController>().AsSingle().NonLazy();
+        Container.BindInterfacesAndSelfTo<ItemFabric>().AsSingle().NonLazy();
     }
 }

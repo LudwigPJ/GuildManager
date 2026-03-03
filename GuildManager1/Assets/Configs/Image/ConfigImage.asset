@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1d0a0f2ba808b5418823b42af765d27, type: 3}
+  m_Name: ConfigImage
+  m_EditorClassIdentifier: 
+  ImageIdList:
+  - BatmanSprite
+  - BernardSprite
+  - FiremanSprite
+  - RomanManSprite
+  - ironManSprite
+  - TorSprite
+  - Armor1Sprite
+  - Armor2Sprite
+  - Boots1Sprite
+  - Boots2Sprite
+  - Helmet1Sprite
+  - helmet2Sprite
+  - Pants1Sprite
+  - pants2Sprite
+  - Quest1Sprite
+  - Quest2Sprite
+  - Quest3Sprite
+  SpriteList:
+  - {fileID: 21300000, guid: 21a941a05c5dbbd4d8a1ad6eb362d412, type: 3}
+  - {fileID: 21300000, guid: dc8a7ced64b9cfb47afab233d3a4aab0, type: 3}
+  - {fileID: 21300000, guid: 660c3296d40f2814295dacdd6d4e4c46, type: 3}
+  - {fileID: 21300000, guid: de5ebf666c300eb41bf2a2e776ec9266, type: 3}
+  - {fileID: 21300000, guid: 3b9b997e3856d724b974cd25f5d8e728, type: 3}
+  - {fileID: 21300000, guid: dbe1dacb12078ea479832dc389189995, type: 3}
+  - {fileID: 21300000, guid: 7469be5dd4cf26c41b02c09e8ab697e8, type: 3}
+  - {fileID: 21300000, guid: b8629a551368ea041868b74f2d7041fd, type: 3}
+  - {fileID: 21300000, guid: b9672960cea6c1043b7c85602bdcef79, type: 3}
+  - {fileID: 21300000, guid: d148a5e2fa75ff34494be6b87f4ef677, type: 3}
+  - {fileID: 21300000, guid: c26db0c15315ccf489c3e9725c4a6b2c, type: 3}
+  - {fileID: 21300000, guid: 8c8517e96cc5ca3479829ff01103cf7d, type: 3}
+  - {fileID: 21300000, guid: ef4522632b62f32429b5e5f81a6bc59a, type: 3}
+  - {fileID: 21300000, guid: 6bfdebe165a2a6b42aedd96cf8855b7c, type: 3}
+  - {fileID: 21300000, guid: 8eb7ea88e5789124f9d0fd5587c72668, type: 3}
+  - {fileID: 21300000, guid: 45afa3e62740c534b9faf41bcda08db6, type: 3}
+  - {fileID: 21300000, guid: 0c08ea5871037a14e8745b581513d021, type: 3}

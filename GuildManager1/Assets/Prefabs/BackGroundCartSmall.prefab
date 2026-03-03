@@ -113,6 +113,7 @@ MonoBehaviour:
   Galochka: {fileID: 0}
   level: {fileID: 2014428542956924728}
   experiense: {fileID: 5584218393300863590}
+  ImageConfig: {fileID: 11400000, guid: 20026fb56b5145a4b985b4f3fd9511a2, type: 2}
   BootsBaseSprite: {fileID: 0}
   ArmorBaseSprite: {fileID: 0}
   PantsBaseSprite: {fileID: 0}

@@ -7,7 +7,7 @@ public class HeroConfig : ScriptableObject
     [SerializeField] float Hp;
     [SerializeField] float Speed;
     [SerializeField] string Name;
-    [SerializeField] Sprite Hero;
+    [SerializeField] string Hero;
     [SerializeField] int Price;
     
 

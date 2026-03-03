@@ -1128,6 +1128,11 @@ MonoBehaviour:
   ArmorView: {fileID: 6514994573741578606}
   PantsView: {fileID: 1238043725777830238}
   HelmetView: {fileID: 1195859089377268554}
+  Price: {fileID: 0}
+  Galochka: {fileID: 0}
+  level: {fileID: 0}
+  experiense: {fileID: 0}
+  ImageConfig: {fileID: 11400000, guid: 20026fb56b5145a4b985b4f3fd9511a2, type: 2}
   BootsBaseSprite: {fileID: 21300000, guid: b9672960cea6c1043b7c85602bdcef79, type: 3}
   ArmorBaseSprite: {fileID: 21300000, guid: 7469be5dd4cf26c41b02c09e8ab697e8, type: 3}
   PantsBaseSprite: {fileID: 21300000, guid: ef4522632b62f32429b5e5f81a6bc59a, type: 3}

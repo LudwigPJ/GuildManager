@@ -15,7 +15,7 @@ MonoBehaviour:
   Demage: 15
   Hp: 30
   Speed: 12
-  Item: {fileID: 21300000, guid: 999869a55024c1545b7a02f949f8dc26, type: 3}
+  Item: Boots1Sprite
   Name: boots1
   type: 3
   price: 45

@@ -16,5 +16,5 @@ MonoBehaviour:
   Hp: 30
   Speed: 12
   Name: Batman
-  Hero: {fileID: 21300000, guid: 21a941a05c5dbbd4d8a1ad6eb362d412, type: 3}
+  Hero: BatmanSprite
   Price: 50

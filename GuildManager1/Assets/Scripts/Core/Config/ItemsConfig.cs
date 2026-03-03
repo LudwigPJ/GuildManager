@@ -20,7 +20,7 @@ namespace Assets.Scripts.Core.Config.ItemsConfig
         [SerializeField] float Demage;
         [SerializeField] float Hp;
         [SerializeField] float Speed;
-        [SerializeField] Sprite Item;
+        [SerializeField] string Item;
         [SerializeField] string Name;
         [SerializeField] EItemType type;
         [SerializeField] int price;

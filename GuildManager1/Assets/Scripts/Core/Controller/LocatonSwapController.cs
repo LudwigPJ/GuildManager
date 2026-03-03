@@ -36,14 +36,14 @@ public class LocatonSwapController :IDisposable
         CityView.OnToCasarmClicked += OnButtonCasarm;
         CityView.OnToShopClicked += OnButtonShop;
         _ShopView.OnReturnShopClicked += OnButtonReturn;
-        OnButtonOff();
+        OnButtonOffNoVisual();
 
 
     }
     private void OnButtonShop()
     {
         _ShopView.gameObject.SetActive(true);
-        CityView.gameObject.SetActive(false);
+        CityView.Hide();
         TavernView.gameObject.SetActive(false);
         _BlackSmithView.gameObject.SetActive(false);
         _TreninngPlaceView.gameObject.SetActive(false);
@@ -54,7 +54,7 @@ public class LocatonSwapController :IDisposable
 
     private void OnButtonCasarm()
     {
-        CityView.gameObject.SetActive(false);
+        CityView.Hide();
         TavernView.gameObject.SetActive(false);
         _BlackSmithView.gameObject.SetActive(false);
         _TreninngPlaceView.gameObject.SetActive(false);
@@ -66,7 +66,7 @@ public class LocatonSwapController :IDisposable
     private void OnButtonTreningPlace()
     {
         _TreningPlaceController.RefreshHeroesInTreningPlace();
-        CityView.gameObject.SetActive(false);
+        CityView.Hide();
         TavernView.gameObject.SetActive(false);
         _BlackSmithView.gameObject.SetActive(false);
         _TreninngPlaceView.gameObject.SetActive(true);
@@ -80,7 +80,7 @@ public class LocatonSwapController :IDisposable
     private void OnButtonBlacksmith()
     {
         _BlacksmithController.RefreshItemSmith();
-        CityView.gameObject.SetActive(false);
+        CityView.Hide();
         _BlackSmithView.gameObject.SetActive(true);
         TavernView.gameObject.SetActive(false);
         _TreninngPlaceView.gameObject.SetActive(false);
@@ -90,7 +90,7 @@ public class LocatonSwapController :IDisposable
     }
     private void OnButtonReturn()
     {
-        CityView.gameObject.SetActive (true);
+        CityView.Show();
         TavernView.gameObject.SetActive(false);
         _BlackSmithView.gameObject.SetActive(false);
         _TreninngPlaceView.gameObject.SetActive(false);
@@ -102,7 +102,7 @@ public class LocatonSwapController :IDisposable
     {
         
         TavernView.gameObject.SetActive (true);
-        CityView.gameObject.SetActive(false);
+        CityView.Hide();
         _BlackSmithView.gameObject.SetActive(false);
         _TreninngPlaceView.gameObject.SetActive(false);
         _CasarmView.gameObject.SetActive(false);
@@ -110,6 +110,21 @@ public class LocatonSwapController :IDisposable
 
         
     }
+
+    private void OnButtonOffNoVisual()
+    {
+
+        TavernView.gameObject.SetActive(true);
+        CityView.gameObject.SetActive(false);
+        _BlackSmithView.gameObject.SetActive(false);
+        _TreninngPlaceView.gameObject.SetActive(false);
+        _CasarmView.gameObject.SetActive(false);
+        _ShopView.gameObject.SetActive(false);
+
+
+    }
+
+
 
     public void Dispose()
     {
